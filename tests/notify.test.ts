@@ -28,18 +28,25 @@ const bet: Bet = {
   ],
 };
 const run = (m: Match, prev: Parameters<typeof diff>[1]) => diff([evaluateBet(bet, new Map([["e1", m]]))], prev);
+const all = (r: ReturnType<typeof run>) => r.notices.map((n) => `${n.title} | ${n.body}`).join("\n");
 
-test("primera vuelta no manda nada; después avisa arranque, goles y resultado", () => {
+test("primera vuelta no avisa; después avisa arranque, goles y resultado sin repetir", () => {
   const r0 = run(base("pre", []), null);
-  assert.deepEqual(r0.messages, []);
+  assert.deepEqual(r0.notices, []);
   const r1 = run(base("in", []), r0.next);
-  assert.match(r1.messages[0], /Arrancó/);
+  assert.match(all(r1), /Arrancó/);
   const r2 = run(base("in", [g("10", "9")]), r1.next);
-  assert.equal(r2.messages.length, 1);
-  assert.match(r2.messages[0], /GOL de Nacional[\s\S]*lleva <b>1\/2/);
+  assert.equal(r2.notices.length, 1);
+  assert.match(all(r2), /Gol de tu jugador Goleador[\s\S]*Lleva 1\/2/);
   const r3 = run(base("in", [g("10", "9")]), r2.next);
-  assert.deepEqual(r3.messages, []); // no repite
+  assert.deepEqual(r3.notices, []);
   const r4 = run(base("in", [g("10", "9"), g("50", "9")]), r3.next);
-  assert.match(r4.messages.join("\n"), /lo cumplió! 2\/2/);
-  assert.match(r4.messages.join("\n"), /TIMBA GANADA[\s\S]*\$800/);
+  assert.match(all(r4), /lo cumplió! 2\/2/);
+  assert.match(all(r4), /TIMBA GANADA[\s\S]*\$800/);
+});
+
+test("gol de otro jugador avisa como gol común", () => {
+  const r1 = run(base("in", []), run(base("in", []), null).next);
+  const r2 = run(base("in", [g("30", "7")]), r1.next);
+  assert.match(all(r2), /^⚽ Gol de Nacional 30'/);
 });

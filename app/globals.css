@@ -203,6 +203,25 @@ button { cursor: pointer; }
 .player:hover { background: var(--panel-2); }
 .player[aria-pressed="true"] { border-color: var(--red); background: rgba(229,19,63,.1); }
 
+/* ---------- Login ---------- */
+.shell:has(.login-wrap) { grid-template-columns: 1fr; }
+.login-wrap {
+  min-height: calc(100dvh - 60px); display: grid; place-items: center; padding: 16px;
+  background: radial-gradient(600px 300px at 50% 0%, rgba(229,19,63,.18), transparent 70%);
+}
+.login-card {
+  width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px;
+  padding: 26px; border-radius: var(--radius-lg); background: var(--panel); border: 1px solid var(--line-soft);
+  box-shadow: 0 0 60px rgba(229,19,63,.12);
+}
+.login-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+.rail-user {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--font-num); font-weight: 700; font-size: 18px; text-transform: uppercase;
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+}
+.rail-user:hover { border-color: var(--red); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1240px) {
   .grid { grid-template-columns: 280px minmax(0, 1fr); }

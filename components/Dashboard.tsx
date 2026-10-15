@@ -22,6 +22,10 @@ export default function Dashboard() {
   const load = useCallback(async () => {
     try {
       const res = await fetch("/api/bets", { cache: "no-store" });
+      if (res.status === 401) {
+        location.href = "/login";
+        return;
+      }
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
       setBets(data.bets);

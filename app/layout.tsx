@@ -5,7 +5,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "TIMBA",
   description: "Seguí tus apuestas en vivo: resultados, goleadores y avisos.",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.svg", apple: "/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "TIMBA", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = { themeColor: "#060607", colorScheme: "dark" };
